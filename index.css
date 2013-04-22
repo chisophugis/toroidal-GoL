@@ -1,0 +1,26 @@
+* {
+  margin: 0;
+  padding: 0;
+
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+body {
+  background-color: #F8F8F8;
+}
+
+canvas {
+    border: 1px dotted silver;
+    margin: 5px;
+    width: 512px;
+    height: 512px;
+    /* Avoid the border affecting the content width, which causes the
+     * browser to scale the canvas slightly which makes lines not look
+     * sharp.
+     */
+    box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+}
