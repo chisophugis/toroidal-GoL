@@ -5,18 +5,16 @@ var height = 256;
 var buffers = [ new Uint8Array(width * height),
                 new Uint8Array(width * height) ];
 
-function initWithRandomNoise(array) {
+function initWithRandomNoise(density, array) {
     for (var i = 0, n = array.length; i !== n; ++i) {
-        array[i] = (Math.random() < 0.30) ? 0 : 1;
+        array[i] = (Math.random() < density) ? 1 : 0;
     }
 }
-initWithRandomNoise(buffers[0]);
-initWithRandomNoise(buffers[1]);
 
 var theCanvas = document.querySelector('#theCanvas');
 theCanvas.width = width * 2; // 2 pixels per cell
 theCanvas.height = height * 2;
-var theSlider = document.querySelector('#theSlider');
+var initialDensitySlider = document.querySelector('#initialDensitySlider');
 var theOtherSlider = document.querySelector('#theOtherSlider');
 var startSimulationButton = document.querySelector('#startSimulation');
 var randomizeButton = document.querySelector('#randomize');
@@ -27,28 +25,12 @@ function randInt(low, high) {
     return low + Math.floor(Math.random() * diff)
 }
 
-theSlider.addEventListener('change', drawARectangle);
-theOtherSlider.addEventListener('change', drawARectangle);
 
 function randColor() {
     function rand() {
         return randInt(0, 16).toString(16);
     }
     return '#' + rand() + rand() + rand();
-}
-
-function drawARectangle() {
-    var n = parseInt(theSlider.value, 10);
-    var otherN = parseInt(theOtherSlider.value, 10);
-    var ctx = theCanvas.getContext('2d');
-    ctx.fillStyle = randColor();
-    ctx.fillRect(n, otherN, 64, 64);
-    for (var i = 0; i !== 512 / 32; ++i) {
-        for (var j = 0; j !== 512 / 32; ++j) {
-            ctx.fillStyle = randColor();
-            ctx.fillRect(i * 32, j * 32, 32, 32);
-        }
-    }
 }
 
 function swapBuffers() {
@@ -134,7 +116,11 @@ startSimulationButton.addEventListener('click', function (e) {
     });
 });
 
-randomizeButton.addEventListener('click', function (e) {
-    initWithRandomNoise(buffers[0]);
-    initWithRandomNoise(buffers[1]);
-});
+function randomize() {
+    var density = parseFloat(initialDensitySlider.value);
+    initWithRandomNoise(density, buffers[0]);
+    initWithRandomNoise(density, buffers[1]);
+}
+randomize();
+
+randomizeButton.addEventListener('click', randomize);
