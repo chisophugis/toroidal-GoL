@@ -112,13 +112,15 @@ function countLiveNeighbors(buffer, width, height, i, j) {
     return liveNeighbors;
 }
 
+// These match up with the typical B3/S23 designation.
+var bornBitmap = (1 << 3);
+var surviveBitmap = (1 << 2) | (1 << 3);
+
 function shouldLive(buffer, width, height, i, j) {
     var liveNeighbors = countLiveNeighbors(buffer, width, height, i, j);
-    if (index(buffer, width, height, i, j)) { // Is this cell alive?
-        return (liveNeighbors === 2 || liveNeighbors === 3 || liveNeighbors === 6) ? 1 : 0;
-    } else {
-        return (liveNeighbors === 3) ? 1 : 0;
-    }
+    var isSelfAlive = index(buffer, width, height, i, j) === 1;
+    var bitmap =  isSelfAlive ? surviveBitmap : bornBitmap;
+    return ((1 << liveNeighbors) & bitmap) ? 1 : 0;
 }
 
 // FIXME: encapsulate the buffer into something that will know its width and
