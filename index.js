@@ -10,11 +10,6 @@ function initWithRandomNoise(array) {
         array[i] = (Math.random() < 0.30) ? 0 : 1;
     }
 }
-function initWith1s(array) {
-    for (var i = 0, n = array.length; i !== n; ++i) {
-        array[i] = 1 ^ (i % 2);
-    }
-}
 initWithRandomNoise(buffers[0]);
 initWithRandomNoise(buffers[1]);
 
@@ -72,11 +67,6 @@ function drawLifeFromBuffer(ctx) {
     var whichBuf = buffers[which];
     var otherBuf = buffers[other];
 
-    //for (var i = 0; i !== width; ++i) {
-    //    for (var j = 0; j !== height; ++j) {
-    //        otherBuf[i * width + ((j + 1) % height)] ^= whichBuf[i * width + j];
-    //    }
-    //}
     updateLife(buffers[which], buffers[other]);
     ctx.fillStyle = '#FFF';
     ctx.fillRect(0, 0, theCanvas.width, theCanvas.height);
